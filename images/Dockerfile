@@ -7,7 +7,8 @@ RUN apt-get update; \
       python-setuptools \
       python-dev \
       python-pip build-essential \
-      git
+      git; \
+      rm -rf /var/lib/apt/lists/*
 
 # Install aws-cli
 RUN pip install --upgrade pip
