@@ -1,9 +1,15 @@
 FROM ubuntu:16.04
 
+MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
+LABEL version="0.0.3" \
+      maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
+      repository="https://github.com/lucpod/serverless-workshop-helper-container"
+
 # Install python & utils
 RUN apt-get update; \
     apt-get install -y \
       curl \
+      vim \
       python-setuptools \
       python-dev \
       python-pip build-essential \
@@ -16,9 +22,9 @@ RUN pip install awscli
 
 # Install node with n
 RUN curl -L https://git.io/n-install | bash -s -- -y 6.10.3
-ENV HOME="/root"
-ENV N_PREFIX="${HOME}/n"
-ENV PATH="${N_PREFIX}/bin:${PATH}"
+ENV HOME "/root"
+ENV N_PREFIX "${HOME}/n"
+ENV PATH "${N_PREFIX}/bin:${PATH}"
 
 # Install go
 RUN cd $HOME; \
@@ -29,10 +35,18 @@ RUN cd $HOME; \
     echo "export GOROOT=/root/go" >> /root/.bashrc; \
     echo "export GOPATH=/root/gopath" >> /root/.bashrc; \
     echo "export PATH=/root/gopath/bin:/root/go/bin:${PATH}" >> /root/.bashrc
-ENV GOROOT="${HOME}/go"
-ENV GOPATH="${HOME}/gopath"
-ENV PATH="${GOPATH}/bin:${GOROOT}/bin:${PATH}"
+ENV GOROOT "${HOME}/go"
+ENV GOPATH "${HOME}/gopath"
+ENV PATH "${GOPATH}/bin:${GOROOT}/bin:${PATH}"
 
 # Install aws-sam-local
 RUN GOROOT="/root/go" GOPATH="/root/gopath" PATH="${GOPATH}/bin:${GOROOT}/bin:${PATH}" go get github.com/awslabs/aws-sam-local; \
     ln -s /root/gopath/bin/aws-sam-local /root/gopath/bin/sam
+
+# Copy custom entrypoint
+COPY entrypoint.sh /var/entrypoint.sh
+RUN chmod +x /var/entrypoint.sh
+
+WORKDIR "/home"
+
+ENTRYPOINT ["/var/entrypoint.sh"]
