@@ -79,7 +79,7 @@ You can do that with the `-v` (volume) option
 
 ```bash
 docker run -it \
-  -v /path/to/my/local/working-dir/:/home/workshop
+  -v /path/to/my/local/working-dir/:/home/workshop \
   lucpod/workshop
 ```
 
@@ -143,7 +143,17 @@ curl -o .env https://raw.githubusercontent.com/lucpod/serverless-workshop-helper
 Now edit your `.env` file and, finally, run the container with:
 
 ```bash
-docker-compose up workshop
+docker-compose up -d
+docker-compose exec workshop bash
+```
+
+This way you don't have to digit again all your config everytime you want to run the
+container.
+
+Don't forget to stop the container when you are finished:
+
+```bash
+docker-compose down
 ```
 
 

@@ -3,6 +3,7 @@ version: '3.4'
 services:
   workshop:
     image: lucpod/workshop
+    command: tail -f /var/log/dmesg
     volumes:
       - ".:/home/workspace"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -11,4 +12,3 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
       AWS_OUTPUT_FORMAT: ${AWS_OUTPUT_FORMAT}
-    restart: always
