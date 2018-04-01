@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="0.0.4" \
+LABEL version="0.0.5" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
@@ -11,11 +11,23 @@ RUN apt-get update; \
       curl \
       vim \
       tmux \
+      apt-transport-https \
       python-setuptools \
       python-dev \
-      python-pip build-essential \
+      python-pip \
+      python-software-properties \
+      build-essential \
+      software-properties-common \
       git; \
       rm -rf /var/lib/apt/lists/*
+
+# Install Docker
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -; \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";  \
+    apt-get update; \
+    apt-cache policy docker-ce; \
+    apt-get install -y docker-ce; \
+    rm -rf /var/lib/apt/lists/*
 
 # Install aws-cli
 RUN pip install --upgrade pip

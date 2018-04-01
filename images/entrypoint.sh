@@ -13,6 +13,7 @@ printf '\e[94m   https://github.com/lucpod    \e[0m\n'
 printf '\n'
 
 # System info
+printf '  ● Docker:    \e[94m%s\e[0m\n' $(docker --version | cut -d' ' -f3 | cut -d',' -f1)
 printf '  ● Node.js:   \e[94m%s\e[0m\n' $(node --version | cut -d'v' -f2)
 printf '  ● NPM:       \e[94m%s\e[0m\n' $(npm --version)
 printf '  ● Python:    \e[94m%s\e[0m\n' $(python --version 2>&1 | cut -d' ' -f2)
