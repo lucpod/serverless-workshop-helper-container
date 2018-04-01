@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="0.0.3" \
+LABEL version="0.0.4" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
@@ -10,6 +10,7 @@ RUN apt-get update; \
     apt-get install -y \
       curl \
       vim \
+      tmux \
       python-setuptools \
       python-dev \
       python-pip build-essential \
@@ -43,9 +44,18 @@ ENV PATH "${GOPATH}/bin:${GOROOT}/bin:${PATH}"
 RUN GOROOT="/root/go" GOPATH="/root/gopath" PATH="${GOPATH}/bin:${GOROOT}/bin:${PATH}" go get github.com/awslabs/aws-sam-local; \
     ln -s /root/gopath/bin/aws-sam-local /root/gopath/bin/sam
 
+# Install NPM utils (json-dynamo-putrequest, lambda-local)
+RUN N_PREFIX="/root/n" PATH="/root/n/bin:${PATH}" npm install -g \
+    json-dynamo-putrequest \
+    lambda-local
+
 # Copy custom entrypoint
 COPY entrypoint.sh /var/entrypoint.sh
 RUN chmod +x /var/entrypoint.sh
+
+# Copy templates
+RUN mkdir /root/templates
+COPY templates/* /root/templates/
 
 WORKDIR "/home"
 
