@@ -178,6 +178,7 @@ docker run -it \
   -e AWS_REGION="eu-west-1" \
   -e AWS_OUTPUT_FORMAT="json" \
   -e PARENT_PWD=$(pwd) \
+  -p 3000:3000 \
   -v /path/to/my/local/working-dir/:/home \
   -v /var/run/docker.sock:/var/run/docker.sock \
   lucpod/workshop
