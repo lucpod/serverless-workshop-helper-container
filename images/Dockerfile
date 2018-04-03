@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="1.0.2" \
+LABEL version="1.1.0" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
@@ -34,7 +34,7 @@ RUN pip install --upgrade pip
 RUN pip install awscli
 
 # Install node with n
-RUN curl -L https://git.io/n-install | bash -s -- -y 6.10.3
+RUN curl -L https://git.io/n-install | bash -s -- -y 8.10
 ENV HOME "/root"
 ENV N_PREFIX "${HOME}/n"
 ENV PATH "${N_PREFIX}/bin:${PATH}"
