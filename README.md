@@ -21,6 +21,42 @@ The image comes with the following software pre-installed:
 This way you don't have to install all of those manually in your machine!
 
 
+## 🤓 The "easy" way with Docker compose
+
+The easiest way to use this container image is with [Docker compose](https://docs.docker.com/compose),
+you can easily get started by pulling a sample compose file directly into your workspace directory:
+
+```bash
+curl -O https://raw.githubusercontent.com/lucpod/serverless-workshop-helper-container/master/docker-compose.yml
+```
+
+You will also need the `.env` file to define the configuration variables:
+
+```bash
+curl -o .env https://raw.githubusercontent.com/lucpod/serverless-workshop-helper-container/master/.env~SAMPLE
+```
+
+Now edit your `.env` file and, finally, run the container with:
+
+```bash
+docker-compose up -d
+docker-compose exec workshop bash
+```
+
+This way you don't have to digit again all your config everytime you want to run the
+container.
+
+Don't forget to stop the container when you are finished:
+
+```bash
+docker-compose down
+```
+
+That's everything you need to know to be proficient with the image. Anyway, if you
+would like to understand more the internals or use the image without Docker compose,
+keep reading this documentation.
+
+
 ## 👇 Pull the image
 
 To pull the image from Docker Hub run:
@@ -79,7 +115,7 @@ You can do that with the `-v` (volume) option
 
 ```bash
 docker run -it \
-  -v /path/to/my/local/working-dir/:/home/workshop \
+  -v /path/to/my/local/working-dir/:/home \
   lucpod/workshop
 ```
 
@@ -88,11 +124,16 @@ docker run -it \
 
 At some point in the workshop you might need to use tools based on Docker like
 SAM Local. To enable the container to spin up other containers in the host machine,
-you have to run the container with the following volume:
+you have to run the container with the following volume.
+When using SAM Local, since the SAM container will be started in the main Docker environment
+(the host machine in most systems), you will need to know the path of your project in the
+host machine. An easy way to do that is to pass it during container bootstrap as an
+environment variable, like `PARENT_PWD`. This configuration will look like this:
 
 ```bash
 docker run -it \
   -v /var/run/docker.sock:/var/run/docker.sock \
+  -e PARENT_PWD=$(pwd) \
   lucpod/workshop
 ```
 
@@ -101,10 +142,29 @@ or, **if you are on Windows**:
 ```bash
 docker run -it \
   -v //var/run/docker.sock:/var/run/docker.sock \
+  -e PARENT_PWD=$(pwd) \
   lucpod/workshop
 ```
 
-Notice the double slash (`//`) at the beginning of the path
+Notice the double slash (`//`) at the beginning of the volume path.
+
+With this setup, when inside the container, you can reference the `PWD` in the host
+machine with the environment variable `$PARENT_PWD` and use the docker daemon from
+the host machine too.
+
+
+## 🚪 Open ports for SAM local
+
+Tools like SAM Local will open ports to expose specific services. For instance the
+`start-api` functionality of SAM Local will create an API Gateway on port `3000`. If you want to
+expose this port on your host machine too (so that you can use your favorite API client),
+you can do it with the `-p` flag:
+
+```bash
+docker run -it \
+  -p 3000:3000 \
+  lucpod/workshop
+```
 
 
 ### 🤙 Full ideal run config
@@ -117,44 +177,13 @@ docker run -it \
   -e AWS_SECRET_ACCESS_KEY="YYYY" \
   -e AWS_REGION="eu-west-1" \
   -e AWS_OUTPUT_FORMAT="json" \
-  -v /path/to/my/local/working-dir/:/home/workshop \
+  -e PARENT_PWD=$(pwd) \
+  -v /path/to/my/local/working-dir/:/home \
   -v /var/run/docker.sock:/var/run/docker.sock \
   lucpod/workshop
 ```
 
 Be sure to change all the parameters according to your configuration.
-
-
-### 🤲 All in one with Docker Compose
-
-If you prefer to use [Docker compose](https://docs.docker.com/compose), you can easily get started by pulling a sample compose file
-directly into your workspace directory:
-
-```bash
-curl -O https://raw.githubusercontent.com/lucpod/serverless-workshop-helper-container/master/docker-compose.yml
-```
-
-You will also need the `.env` file to define the configuration variables:
-
-```bash
-curl -o .env https://raw.githubusercontent.com/lucpod/serverless-workshop-helper-container/master/.env~SAMPLE
-```
-
-Now edit your `.env` file and, finally, run the container with:
-
-```bash
-docker-compose up -d
-docker-compose exec workshop bash
-```
-
-This way you don't have to digit again all your config everytime you want to run the
-container.
-
-Don't forget to stop the container when you are finished:
-
-```bash
-docker-compose down
-```
 
 
 ## 👯‍ Contributing
@@ -166,4 +195,4 @@ You can contribute just by submitting bugs or suggesting improvements by
 
 ## 🤦‍ License
 
-Licensed under [MIT License](LICENSE). © LucPod.
+Licensed under [MIT License](https://github.com/lucpod/serverless-workshop-helper-container/LICENSE). © LucPod.
