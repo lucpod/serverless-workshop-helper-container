@@ -11,7 +11,7 @@ The image comes with the following software pre-installed:
 
   - Docker:    `18.03.0-ce`
   - Node.js:   `8.10.0`
-  - NPM:       `3.10.10`
+  - NPM:       `5.6.0`
   - Python:    `2.7.12`
   - PIP:       `9.0.3`
   - Go:        `1.10`
