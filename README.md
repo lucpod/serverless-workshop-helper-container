@@ -38,6 +38,7 @@ curl -o .env https://raw.githubusercontent.com/lucpod/serverless-workshop-helper
 Now edit your `.env` file and, finally, run the container with:
 
 ```bash
+docker pull lucpod/workshop:latest
 docker-compose up -d
 docker-compose exec workshop bash
 ```

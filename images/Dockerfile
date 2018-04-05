@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="1.2.0" \
+LABEL version="1.2.1" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
