@@ -14,8 +14,7 @@ The image comes with the following software pre-installed:
   - NPM:       `5.6.0`
   - Python:    `2.7.12`
   - PIP:       `9.0.3`
-  - Go:        `1.10`
-  - SAM local: `snapshot`
+  - SAM local: `0.2.10`
   - AWS CLI:   `1.14.68`
 
 This way you don't have to install all of those manually in your machine!

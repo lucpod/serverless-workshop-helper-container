@@ -18,7 +18,6 @@ printf '  ● Node.js:   \e[94m%s\e[0m\n' $(node --version | cut -d'v' -f2)
 printf '  ● NPM:       \e[94m%s\e[0m\n' $(npm --version)
 printf '  ● Python:    \e[94m%s\e[0m\n' $(python --version 2>&1 | cut -d' ' -f2)
 printf '  ● PIP:       \e[94m%s\e[0m\n' $(pip --version | cut -d' ' -f2)
-printf '  ● Go:        \e[94m%s\e[0m\n' $(go version | cut -d' ' -f3 | cut -d'g' -f2 | cut -d'o' -f2)
 printf '  ● SAM local: \e[94m%s\e[0m\n' $(aws-sam-local --version | cut -d' ' -f3)
 printf '  ● AWS CLI:   \e[94m%s\e[0m\n' $(aws --version 2>&1 | cut -d' ' -f1 | cut -d'/' -f2)
 printf '\n\n\n'

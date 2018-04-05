@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="1.1.1" \
+LABEL version="1.2.0" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
@@ -39,22 +39,11 @@ ENV HOME "/root"
 ENV N_PREFIX "${HOME}/n"
 ENV PATH "${N_PREFIX}/bin:${PATH}"
 
-# Install go
-RUN cd $HOME; \
-    curl -O https://storage.googleapis.com/golang/go1.10.linux-amd64.tar.gz; \
-    tar xvf go1.10.linux-amd64.tar.gz; \
-    rm -rf go1.10.linux-amd64.tar.gz; \
-    mkdir /root/gopath; \
-    echo "export GOROOT=/root/go" >> /root/.bashrc; \
-    echo "export GOPATH=/root/gopath" >> /root/.bashrc; \
-    echo "export PATH=/root/gopath/bin:/root/go/bin:${PATH}" >> /root/.bashrc
-ENV GOROOT "${HOME}/go"
-ENV GOPATH "${HOME}/gopath"
-ENV PATH "${GOPATH}/bin:${GOROOT}/bin:${PATH}"
-
 # Install aws-sam-local
-RUN GOROOT="/root/go" GOPATH="/root/gopath" PATH="${GOPATH}/bin:${GOROOT}/bin:${PATH}" go get github.com/awslabs/aws-sam-local; \
-    ln -s /root/gopath/bin/aws-sam-local /root/gopath/bin/sam
+RUN curl -L -O https://github.com/awslabs/aws-sam-local/releases/download/v0.2.10/sam_0.2.10_linux_amd64.tar.gz; \
+    tar xvzf sam_0.2.10_linux_amd64.tar.gz; \
+    mv sam /usr/local/bin; \
+    rm -rf sam_0.2.10_linux_amd64.tar.gz
 
 # Install NPM utils (json-dynamo-putrequest, lambda-local)
 RUN N_PREFIX="/root/n" PATH="/root/n/bin:${PATH}" npm install -g \
