@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 MAINTAINER "Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)"
-LABEL version="1.2.2" \
+LABEL version="1.2.3" \
       maintainer="Luciano Mammino (@loige) & Padraig O'Brien (@Podgeypoos79)" \
       repository="https://github.com/lucpod/serverless-workshop-helper-container"
 
@@ -18,6 +18,7 @@ RUN apt-get update; \
       python-software-properties \
       build-essential \
       software-properties-common \
+      groff \
       git; \
       rm -rf /var/lib/apt/lists/*
 
